@@ -7,4 +7,7 @@ I am a CSUN Master's Student analyzing the differential expression of _Systemic 
 
 
 
-![](https://pbs.twimg.com/media/Evp7s0cWQAAq4ve?format=jpg&name=small)
+
+<p align="center">
+  <img src="https://pbs.twimg.com/media/Evp7s0cWQAAq4ve?format=jpg&name=small" alt="image">
+
