@@ -5,7 +5,7 @@ CSUN Master's Student analyzing the differential expression of _Systemic Lupus E
 > :warning: **Tip:** Remember to:
 1. git pull
 2. git add 
-3. git commit
+3. git commit -a -m
 4. git push **ALL** <ins>assignments from R Studio!</ins>
 
 
