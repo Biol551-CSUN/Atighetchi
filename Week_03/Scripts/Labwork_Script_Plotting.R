@@ -23,5 +23,5 @@ plot2 <- ggplot(data=penguins,
   scale_fill_manual(values = beyonce_palette(18)) + 
   theme_stata() + 
   theme(axis.title = element_text (size = 15), panel.background = element_rect (fill = "white"))
-                                                                                                                                            
+  ggsave(here("Week_03","Output", "Rough_draft_Lab.png"), width = 11, height = 7)                                                                                                                                          
                                                                           
