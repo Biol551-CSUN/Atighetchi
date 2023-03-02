@@ -1,0 +1,69 @@
+---
+title: "Markdown #2 - HW"
+author: "Cameron Atighetchi"
+date: "`r Sys.Date()`"
+output: 
+  html_document:
+    toc: TRUE
+    toc_float: TRUE
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE,
+                      message = FALSE,
+                      warning = FALSE,
+                      fig.path = "../Output/")
+```
+
+# Summary
+
+This is the HW for 03-02-23 where I created a R markdown with at least one list, **bold**, and *italicized* element.  
+As well as one plot and one table each with the preloaded *palmerpenguins* package information. 
+
+
+# Load Libraries  
+```{r}
+library(tidyverse)
+library(here)
+library(palmerpenguins)
+library(kableExtra)
+```
+
+Load all libraries we are using for this lab today
+
+# Creating a **Plot** with *Penguins* Data
+```{r PenguinsHW03-02-23}
+penguins %>%
+  ggplot(aes(x = bill_length_mm, # create a scatter plot grouped by island with different colors for each
+          y = bill_depth_mm, 
+         color = island,
+         group = island)) +
+  geom_point()
+  
+```
+
+# Create a **Table** for *Penguins* Data
+```{r, fig.height=3}
+penguins %>%
+  group_by(island) %>% # groups by island
+  select(bill_length_mm, body_mass_g) %>% #selects bill length and body mass columns
+  summarise(billmean = mean(bill_length_mm, na.rm = TRUE), # calculates mean for bill length
+            bodymean = mean(body_mass_g, na.rm = TRUE)) %>% # calculates mean for body mass
+ kbl() %>% # creates a kable table
+  kable_styling(full_width = FALSE) #sets width to be 'skinnier' and not span the entire page
+  
+```
+
+# Creating a List in R Markdown  
+
+Here we are learning how to create a list.  
+This list will outline what we do when we come into class **everyday**
+
+  1. Load up R Studio and git pull lecture notes.  
+  2. Create a Week # Folder with Output-Script-Data.  
+  3. Create starter script introduction.  
+  4. Load libraries, Data Wrangle, and Functions  
+  5. At end of class: git add, git commit, git push!
+  
+
+  
