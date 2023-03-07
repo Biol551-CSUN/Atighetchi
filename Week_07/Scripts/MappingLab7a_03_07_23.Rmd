@@ -1,0 +1,124 @@
+---
+title: "Intro to Mapping Lab"
+author: "Cameron Atighetchi"
+date: '`r Sys.Date()`'
+output: 
+  prettydoc::html_pretty:
+      theme: "cayman"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE,
+                      message = FALSE,
+                      warning = FALSE,
+                      fig.path = "../Output/")
+```
+
+# Summary  
+
+Today we are using Bigfoot data to plot Bigfoot sightings in Alabama!!
+
+# Load Libraries  
+```{r}
+library(tidyverse)
+library(here)
+library(maps)
+library(mapdata)
+library(mapproj)
+library(prettydoc)
+```
+
+Load all libraries we are using for this lab today.  
+
+# Load our Bigfoot Data
+
+```{r}
+bigfoot_data<-read_csv(here("Week_07","Data","bigfoot.csv")) # Load our Bigfoot Data
+```
+
+Here we are loading our Bigfoot csv data.  
+
+## Filter our Bigfoot data to include States, Latitude and Longitude Data
+
+```{r}
+bigfoot_data <- bigfoot_data %>%
+  select (state, latitude, longitude) %>%  # select only state, latitude, and longitude columns
+  drop_na(state, latitude, longitude) %>%  # filter NAs from state, latitude, and longitude 
+  filter(state == "Alabama") # this filters out all values except for Alabama
+
+head(bigfoot_data)
+
+```
+
+## Set up Alabama map using counties data
+
+```{r}
+
+counties <- map_data("county") %>%  # load county map data from 'mapdata' package
+  filter (region == "alabama") # filter region to only show alabama
+head(counties)
+
+```
+
+## Plot Bigfoot sightings in Alabama on a map
+
+```{r BigfootMapLabStep1}
+ggplot() +
+  geom_polygon(data = counties, # data is equal to counties w/ higher resolution
+               aes(x = long, # set x as longitude
+                   y = lat, # set y as latitude
+                   group = group), # lifts pen up 
+               fill = "black", # fills map black
+               color = "#f09892") + # outlines county and state lines with red
+  coord_map() + # coordinates map to fit 
+  theme_minimal() # minimal theme
+```
+
+## Add our Bigfoot sighting points to our map of Alabama  
+
+```{r BigfootMapLabStep2}
+# Let's add our points to our map
+ggplot() +
+  geom_polygon(data = counties,
+               aes(x = long,
+                   y = lat,
+                   group = group),
+               fill = "black",
+               color = "#f09892") +
+  coord_map() +
+  theme_minimal() +
+  geom_point(data = bigfoot_data, # adds points from bigfoot data
+             aes(x = longitude,  # x is set to long
+                 y = latitude), # y is set to lat
+             color = "white")  # plot points as white
+```
+
+
+## Customize our Plot using different themes 
+
+```{r BigfootMapLabStep3}
+ggplot() +
+  geom_polygon(data = counties,
+               aes(x = long,
+                   y = lat,
+                   group = group),
+               fill = "black",
+               color = "#f09892") +
+  coord_map() +
+  theme_minimal() +
+  geom_point(data = bigfoot_data,
+             aes(x = longitude, 
+                 y = latitude),
+             color = "white") +
+  labs(title = "Bigfoot Sightings in Alabama", # adds plot title
+       x = "Longitude", # adds x axis title
+       y = "Latitude") + # adds y axis title
+  theme(plot.title = element_text(hjust = 0.6), # centers plot title
+        axis.ticks = element_blank()) #gets rid of scaled axis ticks
+  
+```
+
+
+### You've created a Plot!!!!!!!  
+
+
