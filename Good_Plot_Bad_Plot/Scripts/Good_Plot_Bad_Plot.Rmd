@@ -98,6 +98,7 @@ artistplot <- artists %>%
   geom_label_repel(force = 0.2, nudge_y = 0.5, force_pull = 0.2, size = 2.5, segment.color = "white") + # create labels for each artist
   geom_point(aes(size = TCU, color = Genre)) + # create points with varying size based on TCU and color based on genre 
   theme_minimal() +
+  scale_color_brewer() +
   theme(panel.grid.minor = element_line(linetype = "dashed", # gives a dashed line to the the minor gridlines
                                     color = "gray"),
     panel.grid.major = element_blank(), # gets rid of major grid lines
@@ -122,6 +123,7 @@ genreplot <- artists %>%
   geom_point(aes(size = TCU, color = Genre)) + # create points with varying size based on TCU and color based on genre 
   facet_wrap(~Genre) + # facet wrap based on genre
   theme_minimal() +
+  scale_color_brewer() +
   theme(panel.grid.minor = element_line(linetype = "dashed", # gives a dashed line to the the minor gridlines
                                     color = "gray"),
     panel.grid.major = element_blank(), # gets rid of major grid lines
