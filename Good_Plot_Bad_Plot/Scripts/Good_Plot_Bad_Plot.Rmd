@@ -57,13 +57,15 @@ Using Claus Wilke’s and Healy's guidelines  my *bad plot* is considered bad be
 
 
 ```{r}
-artists %>%
+artists2 <- read_csv(here("Good_Plot_Bad_Plot", "Data","artists.csv"))
+artists2 %>%
   filter(Year >= 1990) %>%
-  ggplot(aes(x = Artist, y = TCU, size = TCU, color = Genre)) +
+  ggplot(aes(x = Artist, y = Sales, size = Sales, color = Genre)) +
   geom_point() +
   theme_solarized() +
   theme(panel.background = element_rect(fill = "#39ff14"),
-        plot.background = element_rect(fill = "#faf607")) +
+        plot.background = element_rect(fill = "#faf607"),
+        axis.title = element_blank()) +
   scale_color_excel() +
   guides(color = FALSE) 
 ```
