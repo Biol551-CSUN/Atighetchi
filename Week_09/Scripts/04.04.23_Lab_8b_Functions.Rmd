@@ -1,0 +1,84 @@
+---
+title: 'Lab: Functional Coding'
+author: "Cameron Atighetchi"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Functional Coding -- Lab
+
+## Load Libraries
+
+```{r warning=FALSE, message=FALSE}
+library(tidyverse)
+library(ggrepel)
+library(ggthemes)
+```
+
+## Load Data
+
+I decided to use the mtcars dataset in base R and focus in on the miles per gallon (mpg)
+```{r}
+cars_data <- mtcars # assigns a new value to base R mtcars
+```
+
+## Non - Plotting Function
+I want to use a function to convert miles per gallon (mpg) to kilometers per gallon (kmpg)
+```{r}
+mpg_to_km_per_gallon <- function(mpg) {
+  kmpg <- (mpg * 0.425) # creates a conversion value from mpg to kmpg as a function
+  return(kmpg) # returns kmpg value
+}
+```
+### Using our new mpg to kmpg function we can convert all values within the mpg column into kilometers per gallon
+```{r}
+kmpg_cars <- cars_data %>%
+  mutate(mpg = mpg_to_km_per_gallon(mpg))
+
+head(kmpg_cars)
+```
+
+## Plotting Function
+
+### For the plotting function I decided to create an ifelse function were cars over and under the kmpg of 9 are plotted in the first plot and all cars are plotted in the second plot
+
+#### Setting the function:
+```{r}
+myplot<-function(data = kmpg_cars, x, y, mpg = TRUE){ # add new argument for lines
+  if(mpg == TRUE){
+    ggplot(data, aes(x = {{x}}, y = {{y}} > 9, label = rownames(kmpg_cars)))+
+      geom_point()+
+      theme_bw()
+  }
+  else{
+    ggplot(data, aes(x = {{x}}, y = {{y}}, label = rownames(kmpg_cars)))+
+      geom_point()+
+      theme_bw()
+  }
+}
+```
+
+#### Plot set to TRUE (tells us the incidents of Kmpg > 9 or Kmpg < 9)
+```{r}
+myplot(x = wt, y = mpg, mpg = TRUE) +
+  labs(x = "Weight (in thousands of lbs)",
+       y = "Kmpg > 9",
+       title = "Kmpg > 9 (TRUE) or Kmpg < 9 (FALSE)") +
+  theme_clean() +
+  geom_label_repel(max.overlaps = Inf)
+```
+
+
+#### Plot set to FALSE (shows us all points plotted)
+```{r}
+myplot(x = wt, y = mpg, mpg = FALSE) +
+  labs(x = "Weight (in thousands of lbs)",
+       y = "Kmpg",
+       title = "Kmpg as a function of weight of a make and model for Cars")
+
+```
+
