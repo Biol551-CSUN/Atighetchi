@@ -1,0 +1,66 @@
+---
+title: "Factors_Lab_04.20.23"
+author: "Cameron Atighetchi"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Using Factors Lab
+
+## Load Libraries
+```{r warning=FALSE}
+library(tidyverse)
+library(here)
+library(ggthemes)
+```
+
+## Load Data 
+```{r warning=FALSE}
+tidal_data <- read_csv(here("Week_11","Data", "intertidaldata.csv"))
+```
+
+Loads our Intertidal Dataset to use to look at Quadrat Heights.  
+
+## Data Wrangling
+```{r warning=FALSE}
+Quadrat_data <- tidal_data %>%
+  filter(!is.na(Quadrat)) %>% # remove NAs in Quadrat
+  mutate(Quadrat = str_replace(Quadrat, pattern = "[0-9]|\\.", replacement = ""), # replace all numbers, and periods found in this column with nothing
+         Quadrat = str_trim(Quadrat)) # get rid of white space in these values
+
+```
+
+This allows us to tidy up our data to work to plot this data and visualize Quadrat Height per Site
+
+## Plotting
+```{r warning=FALSE}
+Quad_factor <- Quadrat_data %>%
+  filter(Site == c("Scripps", "Crystal Cove")) %>% # only pick Scripps and Crystal Cove sites
+  group_by(Site) %>% # group by Site
+  count(Quadrat) %>% # count all instances of each height based on site
+  mutate(Quadrat = factor(Quadrat, levels = c("Low", "Mid", "High"))) %>% # turn quadrat into a factor and change levels to Low, Mid, and High
+  ggplot(aes(x = fct_reorder(Site, n), #reorder to go from ascending order
+             y = n, # count 
+             fill = Quadrat))+ # fill is per quadrat
+  geom_col() + 
+  theme_solarized() +
+  scale_fill_manual(values = c("blue", "lightblue", "gray")) + # manually change fill colors
+  theme(plot.background = element_rect("white"), # change panel and plot backgrounds
+        panel.background = element_rect("white")) +
+  labs(x = "Site",
+       y = "Count",
+       title = "Quadrat Height between Crystal Cove and Scripps Sites")
+
+Quad_factor
+```
+
+
+
+
+
+
+
